@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "Credit Balance", "Integration Services Project4\Credit Balance.dtproj", "{F93D150C-1D5B-4657-8600-7CDEF85750DB}"
+EndProject
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "PRS-DebtManager", "Integration Services Project5\PRS-DebtManager.dtproj", "{69328F1F-AAC3-4E7D-903C-FA7BC6C79E16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F93D150C-1D5B-4657-8600-7CDEF85750DB}.Development|Default.ActiveCfg = Development
+		{F93D150C-1D5B-4657-8600-7CDEF85750DB}.Development|Default.Build.0 = Development
+		{69328F1F-AAC3-4E7D-903C-FA7BC6C79E16}.Development|Default.ActiveCfg = Development
+		{69328F1F-AAC3-4E7D-903C-FA7BC6C79E16}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

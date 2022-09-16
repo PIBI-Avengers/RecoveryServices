@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="Safari"
+  DTS:DTSID="{DC4F726C-C8D9-4919-8A8E-6D5A09EC4E86}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=dbsep6774.aimhealth.com;User ID=bar_ssis_prod;Initial Catalog=SafariRpts;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfdBSxCHqfU2O8rPyVtzQEQAAAAACAAAAAAADZgAAwAAAABAAAACih3Ous9GuNubwXm60tdLZAAAAAASAAACgAAAAEAAAAKmo6thDpQI6T2VeHPukFDeAAAAAkL/2N76BaHMnwQpvAJnUARL+DYAefS5neBp1UVUv3UKr2VZCHTPJD/86aP9JkeeDjVoWVCgVRkzWAyDT7bm8MYNf6Z4OTS4iSJJwPAEs1F0Dt0DDX/dgnIJstB5tsvOVhrKxVvN3kXEekifWZnwOJSqU3Gnh3hdSV/6YdcUfZ6gUAAAAXCV0Ms75TS8LR/jAEsSsgfgJpOk=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

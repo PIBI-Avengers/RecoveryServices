@@ -1,0 +1,1115 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/1/2021 11:37:49 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="WDVLBIDEV01"
+  DTS:CreatorName="EQN\jlee"
+  DTS:DTSID="{E5C502DD-8A4B-4197-8D94-D0BB152D90B9}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3026.27"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="prelimClientDim"
+  DTS:PackageType="5"
+  DTS:VersionBuild="12"
+  DTS:VersionGUID="{4952AAC7-78EA-4E1F-B334-122804DB3DE7}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Stag Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DelayValidation="True"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{1880b84c-41aa-4d6f-8a08-dfe4b7980344}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Stag Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{270FF09C-74D5-4531-9D16-2B06F9294F32}"
+          SQLTask:SqlStatementSource="exec stag.usp_CreateStagClientDimTable @etlProcedureName = 'OptumCreditBalanceSafari'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Extract and Load"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DelayValidation="True"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{ca94eb02-05ee-43b5-8d92-fae6f58679b7}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Extract and Load"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Extract and Load\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Extract and Load\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Extract and Load\Derived Column.Inputs[Derived Column Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Extract and Load\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract and Load\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stag].[tbl_OptumCreditBalanceSafariClientDimData]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract and Load\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{270FF09C-74D5-4531-9D16-2B06F9294F32}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[KPI]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[lobDescription]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="14"
+                      cachedName="lobDescription"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lobDescription]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[lobDescription]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[clientName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="clientName"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientName]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[clientName]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[parentName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="parentName"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[parentName]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[parentName]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[clientCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="153"
+                      cachedName="clientCode"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientCode]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[clientCode]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[systemName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="6"
+                      cachedName="systemName"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemName]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[systemName]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[servicingCity]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8"
+                      cachedName="servicingCity"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[servicingCity]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingCity]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[servicingState]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="2"
+                      cachedName="servicingState"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[servicingState]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingState]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[servicingCompany]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="servicingCompany"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[servicingCompany]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingCompany]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[displayName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="displayName"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[displayName]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[displayName]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[isProductClientRecord]"
+                      cachedDataType="i4"
+                      cachedName="isProductClientRecord"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[isProductClientRecord]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[isProductClientRecord]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[startEffDate]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8"
+                      cachedName="startEffDate"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[startEffDate]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[startEffDate]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[endEffDate]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="endEffDate"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[endEffDate]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[endEffDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientDimDataId]"
+                      dataType="i4"
+                      name="clientDimDataId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="clientName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="35"
+                      name="systemName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[parentName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="parentName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      name="clientCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[servicingCity]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="servicingCity" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[servicingState]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      name="servicingState" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[servicingCompany]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      name="servicingCompany" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[product]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="product" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[subProduct]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="subProduct" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[altId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      name="altId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[startEffDate]"
+                      dataType="dbTimeStamp"
+                      name="startEffDate" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[endEffDate]"
+                      dataType="dbTimeStamp"
+                      name="endEffDate" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[displayName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="displayName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[opsPlatformId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="opsPlatformId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ledgerName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="ledgerName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lifeCount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="lifeCount" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[isStrategic]"
+                      dataType="bool"
+                      name="isStrategic" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[isProductClientRecord]"
+                      dataType="bool"
+                      name="isProductClientRecord" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[isBluesPlan]"
+                      dataType="bool"
+                      name="isBluesPlan" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientInformationId]"
+                      dataType="i2"
+                      name="clientInformationId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientRegion]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="clientRegion" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="lobDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[feeRate]"
+                      dataType="i4"
+                      name="feeRate" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[source]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      name="source" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ledgerCustomerId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="ledgerCustomerId" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract and Load\Safari"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Safari"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select distinct 
+	'Credit Balance' lobDescription
+	,ins.InsName clientName
+	,ins.insName parentName
+	,ctr.ContractDescr clientCode
+,'Safari' systemName
+,'Franklin' servicingCity
+,'TN' servicingState
+,'Optum' servicingCompany
+,ins.insName displayName
+,0 isProductClientRecord
+,'1/1/1900' startEffDate
+,'12/31/9999' endEffDate
+from
+	SafariRpts.dbo.vwMSTR_ProvClm (nolock) pcl --Pre-invoice header record
+	inner join SafariRpts.dbo.vwMSTR_TeamInsXref a17 with (nolock) on (pcl.ARContractKey = a17.ContractKey)
+	inner join SafariRpts.dbo.vwMSTR_Team a111 with (nolock) on (a17.TeamKey = a111.TeamKey)
+	left join SafariRpts.dbo.vwMSTR_InsClm (nolock) icl on pcl.ClaimId = icl.ClaimId --Post-invoice header record
+	left join SafariRpts.dbo.vwMSTR_Contract (nolock) ctr on pcl.arContractKey = ctr.ContractKey
+	left join SafariRpts.dbo.vwMSTR_PaymentType (nolock) pay on pcl.PaymentType = pay.PaymentType
+	left join SafariRpts.dbo.vwMSTR_Insurer (nolock) ins on ctr.InsKey = ins.InsKey
+	left join SafariRpts.dbo.vwMSTR_PatPolicy (nolock) pat on (pcl.PatPolicyKey = pat.PatPolicyKey)
+	left join (
+				select distinct
+					d.PatPolicyKey
+					,max(d.PatClmTxDate) as PatClmTxDate
+				from
+					SafariRpts.dbo.vwMSTR_PatClaimTrans (nolock) d
+				group by
+					d.PatPolicyKey
+				) pax on (pat.PatPolicyKey = pax.PatPolicyKey)	
+	left join SafariRpts.dbo.vwMSTR_RAMWrittenBy2 (nolock) ram on (pat.WrittenBy = ram.WrittenBy)
+	left join SafariRpts.dbo.vwMSTR_ProvCBOXref (nolock) xrf on (pcl.ProvKey = xrf.ProvKey)
+	left join SafariRpts.dbo.vwMSTR_CBO (nolock) cbo on (xrf.CBOKey = cbo.CBOKey)
+	left join SafariRpts.dbo.vwMSTR_Provider (nolock) pro on (pcl.ProvKey = pro.ProvKey)
+	left join SafariRpts.dbo.vwMSTR_Territory (nolock) ter on (pro.RegionKey = ter.TerritoryKey)
+	left join SafariRpts.dbo.vwMSTR_ProvRegion (nolock) prg on (ter.RegionKey = prg.RegionKey)
+	left join SafariRpts.dbo.vwMSTR_Division (nolock) div on (prg.DivKey = div.DivKey)
+	left join SafariRpts.dbo.vwMSTR_ErrType (nolock) err on (pat.ErrType = err.ErrType) --Overpayment reasons
+	left join SafariRpts.dbo.vwMSTR_ProvClmDenialSubmission (nolock) den on (pcl.ProvClmHdrKey = den.ProvClmHdrKey)
+	left join SafariRpts.dbo.vwMSTR_ProvClmHdrNoteMaxDEN (nolock) dnt on (pcl.ProvClmHdrKey = dnt.ProvClmHdrKey)
+	left join SafariRpts.dbo.vwMSTR_ProvDenialReasonCtgy (nolock) dcg on (den.PDENDenialReasonCtgy = dcg.ProvDenialReason)
+	left join SafariRpts.dbo.vwMSTR_ProvClmSuspenseCurr (nolock) sus on (pcl.ProvClmHdrKey = sus.ProvClmHdrKey)
+	left join SafariRpts.dbo.vwMSTR_SuspenseReasonType (nolock) sur on (sus.SuspenseReasonType = sur.SuspenseReasonType)
+	left join (
+				select
+					ProvClmHdrKey
+					,max(ProvTxAmt) as OrigAmt
+				from
+					SafariRpts.dbo.vwMSTR_ProvClmDet (nolock)
+				where
+					TxCode = 'REFDUE'
+				group by
+					ProvClmHdrKey
+				) pcd on pcl.ProvClmHdrKey = pcd.ProvClmHdrKey
+	left join (
+				select distinct
+					a.ProvClmHdrKey
+					,max(c.ProvTxRsnDescr) as ProvTxRsnDescr
+					,max(a.CRDateAdded) as CRDateAdded
+				from
+					SafariRpts.dbo.vwMSTR_APChkRequest (nolock) a
+					left join SafariRpts.dbo.vwMSTR_ProvClmDenialSubmission (nolock) b on (a.ProvClmHdrKey = b.ProvClmHdrKey)
+					left join SafariRpts.dbo.vwMSTR_ProvTxRsnMaster (nolock) c on (a.ProvTxRsnMasterKey = c.ProvTxRsnMasterKey)
+				where
+					a.CommActionType = 'PDEN'
+					and b.ProvClmHdrKey is null
+				group by
+					a.ProvClmHdrKey
+				) chk on (pcl.ProvClmHdrKey = chk.ProvClmHdrKey)
+where 1=1
+and	(
+		(ctr.ServiceType in ('CB','PPN') and ctr.ClientType in ('STD','EPN'))
+		or 
+		(pcl.ServiceType = 'DM' and pcl.CollProtocolType = 'PPN')
+		or ctr.contractdescr like '%PPN%'
+	)
+	and pcl.ProvClmFinStatus &lt;&gt; 'RC'
+	and pcl.PostInvRecode = 0
+	and pat.WrittenBy &lt;&gt; '10325'
+	and div.DivName is not null
+	and pcl.ServiceType = 'cb'
+	and ctr.ClientType = 'std'</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract and Load\Safari.Connections[OleDbConnection]"
+                  connectionManagerID="{DC4F726C-C8D9-4919-8A8E-6D5A09EC4E86}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[Safari]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[lobDescription]"
+                      length="14"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[lobDescription]"
+                      name="lobDescription"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[clientName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[clientName]"
+                      length="100"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[clientName]"
+                      name="clientName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[parentName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[parentName]"
+                      length="100"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[parentName]"
+                      name="parentName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[clientCode]"
+                      length="153"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[clientCode]"
+                      name="clientCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[systemName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[systemName]"
+                      length="6"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[systemName]"
+                      name="systemName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingCity]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[servicingCity]"
+                      length="8"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingCity]"
+                      name="servicingCity"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingState]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[servicingState]"
+                      length="2"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingState]"
+                      name="servicingState"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingCompany]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[servicingCompany]"
+                      length="5"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[servicingCompany]"
+                      name="servicingCompany"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[displayName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[displayName]"
+                      length="100"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[displayName]"
+                      name="displayName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[isProductClientRecord]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[isProductClientRecord]"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[isProductClientRecord]"
+                      name="isProductClientRecord"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[startEffDate]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[startEffDate]"
+                      length="8"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[startEffDate]"
+                      name="startEffDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[endEffDate]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[endEffDate]"
+                      length="10"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].Columns[endEffDate]"
+                      name="endEffDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="14"
+                      name="lobDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[clientName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="clientName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[parentName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="parentName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="153"
+                      name="clientCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[systemName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      name="systemName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[servicingCity]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      name="servicingCity" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[servicingState]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      name="servicingState" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[servicingCompany]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="servicingCompany" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[displayName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="displayName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[isProductClientRecord]"
+                      dataType="i4"
+                      name="isProductClientRecord" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[startEffDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      name="startEffDate" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output].ExternalColumns[endEffDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="endEffDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="14"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[lobDescription]"
+                      name="lobDescription" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[clientName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[clientName]"
+                      name="clientName" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[parentName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[parentName]"
+                      name="parentName" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="153"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[clientCode]"
+                      name="clientCode" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[systemName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[systemName]"
+                      name="systemName" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[servicingCity]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[servicingCity]"
+                      name="servicingCity" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[servicingState]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[servicingState]"
+                      name="servicingState" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[servicingCompany]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[servicingCompany]"
+                      name="servicingCompany" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[displayName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[displayName]"
+                      name="displayName" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[isProductClientRecord]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[isProductClientRecord]"
+                      name="isProductClientRecord" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[startEffDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[startEffDate]"
+                      name="startEffDate" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[endEffDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[endEffDate]"
+                      name="endEffDate" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Safari.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Extract and Load.Paths[Derived Column Output]"
+              endId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Extract and Load.Paths[OLE DB Source Output]"
+              endId="Package\Extract and Load\Derived Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Extract and Load\Safari.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Transformation"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DelayValidation="True"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{ec393b44-f493-43e5-b710-bbd99c495e6e}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Transformation"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{270FF09C-74D5-4531-9D16-2B06F9294F32}"
+          SQLTask:SqlStatementSource="declare @etlProcedureName varchar(50) = 'OptumCreditBalanceSafari'&#xA;declare @sourceTableList varchar(50) = concat('tbl_',@etlProcedureName,'ClientDimData')&#xA;&#xA;EXEC [stag].[usp_StandardEtl]&#xA;@startDate = N'1/1/1900',&#xA;@etlProcedureName = @etlProcedureName,&#xA;@sourceTblList = @sourceTableList,&#xA;@createLoadTable = 1,&#xA;@loadData = 1,&#xA;@validateLoadData = 1,&#xA;@processClientDim = 1,&#xA;@dropTables = 1,&#xA;@testRun = 1" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{14B53D33-E7CE-4615-A1D9-C5B7A9860E37}"
+      DTS:From="Package\Create Stag Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Extract and Load" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{6997193C-27EA-4131-99B9-AE8E2F2A9C6B}"
+      DTS:From="Package\Extract and Load"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Transformation" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Create Stag Table"
+          TopLeft="297,85" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Extract and Load"
+          TopLeft="294,160" />
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Transformation"
+          TopLeft="300,226" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="375.75,127">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="374.25,202">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,24"
+              Start="0,0"
+              End="0,16.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="v1.00"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="57,40"
+          Id="b1150a56-1b80-4282-9e98-28fbd71bebfa"
+          TopLeft="676,393" />
+        <AnnotationLayout
+          Text="06.01.2021 - jlee - initializing package"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="228,40"
+          Id="733c854f-a9dd-420c-bf5d-39d4ca6f8c74"
+          TopLeft="680,219" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Extract and Load">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Extract and Load\Derived Column"
+          TopLeft="125.5,256.5" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Extract and Load\OLE DB Destination"
+          TopLeft="113.5,337.5" />
+        <EdgeLayout
+          Id="Package\Extract and Load.Paths[Derived Column Output]"
+          TopLeft="200.75,298.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="106,42"
+          Id="Package\Extract and Load\Safari"
+          TopLeft="149.5,178.5" />
+        <EdgeLayout
+          Id="Package\Extract and Load.Paths[OLE DB Source Output]"
+          TopLeft="202.5,220.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract and Load\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract and Load\Safari">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

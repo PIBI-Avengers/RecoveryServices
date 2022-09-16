@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:DelayValidation="True"
+  DTS:ObjectName="Safari tempdb"
+  DTS:DTSID="{B4A21E44-481E-4109-B5B8-C4B1F13F8EF6}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=dbsep6774.aimhealth.com;User ID=bar_ssis_prod;Initial Catalog=tempdb;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfdBSxCHqfU2O8rPyVtzQEQAAAAACAAAAAAADZgAAwAAAABAAAAC89/j4xcTVr1hB3wrDoWlwAAAAAASAAACgAAAAEAAAABt7KTylJoHXxo35NUutaXaAAAAAnzUTtEO5+J6Lsbr36sCIQpBl8V6pFk/3X1cZdlsNKa45mEmbpikOlE2NVexl0QIZIIwg63xlnlg7RsQex1qoQLRis0pFGt2NDQEz6NGaIBmp+kCfBOJJPuTw8nbMqOtdcOs57q7iDAHn5jVsNpmFpNKK7cyp//4y9SFMfgCmWGcUAAAAoGbgMdt40nRBNUhPDzsDFj6s59c=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

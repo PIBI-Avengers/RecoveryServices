@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="KPI"
+  DTS:DTSID="{581841F7-EECB-4206-B2AB-15C48855AE57}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=wpsl1sql02.equian.local;Initial Catalog=KPI;Provider=SQLOLEDB.1;Integrated Security=SSPI;Application Name=SSIS-finalInflectionPointDataDev-{581841F7-EECB-4206-B2AB-15C48855AE57}wpsl1sql02.equian.local.KPI;Auto Translate=False;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

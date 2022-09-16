@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="KPI"
+  DTS:DTSID="{270FF09C-74D5-4531-9D16-2B06F9294F32}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=wpsl1sql02.equian.local;User ID=bar_ssis_prod;Initial Catalog=KPI;Provider=SQLOLEDB.1;Persist Security Info=True;Auto Translate=False;Application Name=SSIS-finalInflectionPointDev-{270FF09C-74D5-4531-9D16-2B06F9294F32}wpsl1sql02.equian.local.KPI;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfdBSxCHqfU2O8rPyVtzQEQAAAAACAAAAAAADZgAAwAAAABAAAAAWo2lqounAEElaGZhGHIbrAAAAAASAAACgAAAAEAAAAOdLV1r5uvg+ufB/8ro12bB4AAAA6xz9YznINvD1J26WfJJqJUSUlUyOiLHY5xTXHpkO4BWMiZ7F6uM/ChZ/QbQKC8/YZFoQi9HxUleIdsVlzCUs9IcBnQvpPeWLBuwwXzOBs+xKtapxohW1aN25TC6R1CKnuhLINIi29c/y3Gx06hWTIB11n1TXdvIjFAAAAIfgnm0G4on84ce1wiSrc66xxSES</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

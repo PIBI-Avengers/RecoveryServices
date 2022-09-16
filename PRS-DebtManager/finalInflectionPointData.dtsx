@@ -1,0 +1,2497 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="5/28/2021 11:53:18 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="WDVLBIDEV01"
+  DTS:CreatorName="EQN\jlee"
+  DTS:DTSID="{6B9FCB77-2C57-448A-AFE1-B03D335C07E0}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3026.27"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="finalInflectionPointData"
+  DTS:PackageType="5"
+  DTS:VersionBuild="22"
+  DTS:VersionGUID="{AE95B8FE-E053-441A-9501-F2787E7D890D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Stag Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DelayValidation="True"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{2F97FCA6-B417-40B2-B6BB-4D869BF9CC76}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Stag Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{581841F7-EECB-4206-B2AB-15C48855AE57}"
+          SQLTask:SqlStatementSource="exec [stag].[usp_CreateStagFactTable] @etlProcedureName = 'PrsDebtManager'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Extract and Load"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DelayValidation="True"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{69BB3F5A-ACB5-43BA-9B3B-F9A9E8D0AAB2}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Extract and Load"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Extract and Load\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Extract and Load\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Extract and Load\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[lobIdDerived]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[lobIdDerived]"
+                      name="lobIdDerived"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">31</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">31</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[metricTypeDerived]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="12"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[metricTypeDerived]"
+                      name="metricTypeDerived"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(dt_str,12,1252)"Actual"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(dt_str,12,1252)"Actual"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[metricSubTypeDerived]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="12"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[metricSubTypeDerived]"
+                      name="metricSubTypeDerived"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(dt_str,12,1252)"Actual"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(dt_str,12,1252)"Actual"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[recordTypeDerived]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="12"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[recordTypeDerived]"
+                      name="recordTypeDerived"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(dt_str,12,1252)"Final"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(dt_str,12,1252)"Final"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[systemNameDerived]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="12"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[systemNameDerived]"
+                      name="systemNameDerived"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(dt_str,12,1252)"DebtManager"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(dt_str,12,1252)"DebtManager"</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Extract and Load\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract and Load\Inventory $"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Inventory $"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">-- Preliminary = 1
+-- Final = 0
+declare @dateOffset int = 1
+declare @startDate datetime = dateadd(m,datediff(m,0,getdate())-@dateOffset,0)
+declare @endDate datetime = dateadd(m,1,@startDate)
+
+select t.claimid
+,concat('PRS - ',Recovery_Source) lobDescription
+,payor_code clientCode
+,kpiStatusDate
+,@startDate dateNum
+,'Inventory ($)' inflectionPoint
+,cast(t.Current_Balance as decimal(18,5)) amount
+from (select distinct
+	ca.cnsmr_accnt_crdtr_rfrnc_id_txt claimId
+	,ca.cnsmr_accnt_id
+	,ca.cnsmr_accnt_idntfr_agncy_id as DM9_Account_Number
+	,c.cnsmr_idntfr_agncy_id as DM9_Consumer_Number
+	,case when OPinfo.UDEFRECSOURC = 'DataMining' then 'Data Mining' else 'CRB' end as Recovery_Source
+	,cast(ca.cnsmr_accnt_plcmnt_date as datetime) kpiStatusDate
+	,crdtr.crdtr_shrt_nm payor_code
+	,CUR.cnsmr_accnt_bal_amnt as Current_Balance
+	,row_number() over (partition by ca.cnsmr_accnt_id order by ca.cnsmr_accnt_id) as row_num
+	from dma_oltp_SNAP.dbo.cnsmr (nolock) c 
+	inner join dma_oltp_SNAP.dbo.cnsmr_accnt (nolock) ca on c.cnsmr_id = ca.cnsmr_id and CA.cnsmr_accnt_is_actv_per_crdtr_flg = 'Y'
+	inner join dma_oltp_SNAP.dbo.crdtr (nolock) crdtr on ca.crdtr_id = crdtr.crdtr_id    
+	inner join dma_oltp_SNAP.dbo.crdtr_Grp (nolock) CG on crdtr.crdtr_grp_id = CG.crdtr_grp_id
+	inner join dma_oltp_SNAP.dbo.UDEFOVERPAYMENTINFO (nolock) OPinfo on OPinfo.cnsmr_accnt_id = CA.cnsmr_accnt_id   
+	inner join dma_oltp_SNAP.dbo.cnsmr_accnt_bal (nolock) CUR on CUR.cnsmr_accnt_id = ca.cnsmr_accnt_id and CUR.bal_nm_id = 2
+	inner join dma_oltp_SNAP.dbo.wrkgrp (nolock) w on c.wrkgrp_id = w.wrkgrp_id and w.wrkgrp_id &lt;&gt; '467' --Closed Accounts
+	inner join dma_oltp_SNAP.dbo.cnsmr_accnt_bal (nolock) org on org.cnsmr_accnt_id = ca.cnsmr_accnt_id and org.bal_nm_id = 1
+	inner join dma_oltp_SNAP.dbo.cnsmr_Wrk_actn (nolock) cwa on c.cnsmr_id = cwa.cnsmr_id
+	left outer join dma_oltp_SNAP.dbo.UDEFCLAIMINFO (nolock) clm on ca.cnsmr_accnt_id = clm.cnsmr_accnt_id
+	where 1=1
+	and OPinfo.UDEFRECSOURC not in ('0','1','5'))t
+where 1=1
+and t.row_num = 1</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract and Load\Inventory $.Connections[OleDbConnection]"
+                  connectionManagerID="{F1D607A1-63F5-42E8-BA35-433F392182F5}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[Debt Manager]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[claimid]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[claimid]"
+                      length="40"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[claimid]"
+                      name="claimid"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[lobDescription]"
+                      length="17"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[lobDescription]"
+                      name="lobDescription"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[clientCode]"
+                      length="8"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[clientCode]"
+                      name="clientCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[kpiStatusDate]"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[kpiStatusDate]"
+                      name="kpiStatusDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[dateNum]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[dateNum]"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[dateNum]"
+                      name="dateNum"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[inflectionPoint]"
+                      length="13"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[inflectionPoint]"
+                      name="inflectionPoint"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[amount]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[amount]"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[amount]"
+                      name="amount"
+                      precision="18"
+                      scale="5"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[claimid]"
+                      codePage="1252"
+                      dataType="str"
+                      length="40"
+                      name="claimid" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="17"
+                      name="lobDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      name="clientCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      name="kpiStatusDate" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[dateNum]"
+                      dataType="dbTimeStamp"
+                      name="dateNum" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      name="inflectionPoint" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].ExternalColumns[amount]"
+                      dataType="numeric"
+                      name="amount"
+                      precision="18"
+                      scale="5" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[claimid]"
+                      codePage="1252"
+                      dataType="str"
+                      length="40"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[claimid]"
+                      name="claimid" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="17"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[lobDescription]"
+                      name="lobDescription" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[clientCode]"
+                      name="clientCode" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[kpiStatusDate]"
+                      name="kpiStatusDate" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[dateNum]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[dateNum]"
+                      name="dateNum" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[inflectionPoint]"
+                      name="inflectionPoint" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[amount]"
+                      dataType="numeric"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[amount]"
+                      name="amount"
+                      precision="18"
+                      scale="5" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract and Load\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stag].[tbl_PrsDebtManagerFactData]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract and Load\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{581841F7-EECB-4206-B2AB-15C48855AE57}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[KPI]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[claimId]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="40"
+                      cachedName="claimId"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[claimId]"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[claimId]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[lobDescription]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="17"
+                      cachedName="lobDescription"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lobDescription]"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[lobDescription]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[clientCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8"
+                      cachedName="clientCode"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientCode]"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[clientCode]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[kpiStatusDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="kpiStatusDate"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[kpiStatusDate]"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[kpiStatusDate]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[dateNum]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="dateNum"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[dateNum]"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[dateNum]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[amount]"
+                      cachedDataType="numeric"
+                      cachedName="amount"
+                      cachedPrecision="18"
+                      cachedScale="5"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[amount]"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[amount]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[inflectionPoint]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="19"
+                      cachedName="inflectionPoint"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[inflectionPoint]"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[inflectionPoint]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[recordTypeDerived]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="12"
+                      cachedName="recordTypeDerived"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[recordType]"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[recordTypeDerived]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[metricTypeDerived]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="12"
+                      cachedName="metricTypeDerived"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[metricType]"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[metricTypeDerived]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[metricSubTypeDerived]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="12"
+                      cachedName="metricSubTypeDerived"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[metricSubType]"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[metricSubTypeDerived]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[systemNameDerived]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="12"
+                      cachedName="systemNameDerived"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemName]"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[systemNameDerived]" />
+                    <inputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[lobIdDerived]"
+                      cachedDataType="i4"
+                      cachedName="lobIdDerived"
+                      externalMetadataColumnId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lobId]"
+                      lineageId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output].Columns[lobIdDerived]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[factDataId]"
+                      dataType="i4"
+                      name="factDataId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="35"
+                      name="lobDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[subProduct]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="subProduct" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[amount]"
+                      dataType="numeric"
+                      name="amount"
+                      precision="18"
+                      scale="5" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="clientCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[dateNum]"
+                      dataType="dbTimeStamp"
+                      name="dateNum" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      name="kpiStatusDate" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[recordType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="recordType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[metricType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="metricType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[metricSubType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="35"
+                      name="metricSubType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="systemName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      length="75"
+                      name="inflectionPoint" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[claimId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="claimId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[firstName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="firstName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lastName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="lastName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[platformName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="platformName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[claimLob]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="claimLob" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lobCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="40"
+                      name="lobCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[providerName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="providerName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[providerCity]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="providerCity" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[providerState]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="providerState" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[providerZip]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="providerZip" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[hospitalSystem]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="hospitalSystem" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[providerTin]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="providerTin" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientProviderId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="clientProviderId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[internalProviderId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="internalProviderId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[providerType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="75"
+                      name="providerType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[diagnosticCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="diagnosticCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[diagnosticCodePosition]"
+                      dataType="ui1"
+                      name="diagnosticCodePosition" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[savingsClassification]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="savingsClassification" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientClassificationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="clientClassificationCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[vendorClassificationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="vendorClassificationCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clientClassificationCodeDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="256"
+                      name="clientClassificationCodeDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[vendorClassificationCodeDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="256"
+                      name="vendorClassificationCodeDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[lobId]"
+                      dataType="i2"
+                      name="lobId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[auditor]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="auditor" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[paymentType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="paymentType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[paymentSubType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="paymentSubType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[paymentTypeCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="paymentTypeCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[paymentTypeCodeDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="paymentTypeCodeDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[fundingType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="fundingType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[fundingTypeDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="fundingTypeDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[minusDebitExclusion]"
+                      dataType="bool"
+                      name="minusDebitExclusion" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[minusDebitExclusionDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="minusDebitExclusionDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[auditLocation]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="auditLocation" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[auditLocationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="auditLocationCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[reworkIndicator]"
+                      dataType="bool"
+                      name="reworkIndicator" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[recoveryType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="recoveryType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[recoveryTypeCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="recoveryTypeCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[participatingProvider]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="participatingProvider" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[schemaName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="schemaName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[participatingProviderCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="participatingProviderCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[modality]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="modality" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[modalityDesc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="modalityDesc" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="systemType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemTypeDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="systemTypeDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemSubType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="systemSubType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemSubTypeState]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="systemSubTypeState" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemSubTypeCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="systemSubTypeCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemSubTypeDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="systemSubTypeDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemSubTypeHomePlan]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="systemSubTypeHomePlan" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemSubTypeHostPlan]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="systemSubTypeHostPlan" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemSubTypeHomeState]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="systemSubTypeHomeState" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemSubTypeHostState]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="systemSubTypeHostState" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[paidClaimRange]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="paidClaimRange" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[billedClaimRange]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="billedClaimRange" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[billingType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="billingType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[homeCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="homeCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[hostCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="hostCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[groupName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="groupName" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[systemClaimId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="systemClaimId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[groupPolicyCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="groupPolicyCode" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract and Load\Placement #"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Placement #"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">declare @dateOffset int = 1
+declare @startDate as datetime = dateadd(m,datediff(m,0,getdate())-@dateOffset,0)
+declare @endDate as datetime =  dateadd(m,1,@startDate)
+
+
+select (Select top 1 cnsmr_accnt_crdtr_rfrnc_id_txt from dma_oltp_SNAP.dbo.cnsmr_accnt with (nolock) where 1=1 and cnsmr_id = consumer_id) claimId
+,'PRS - CRB' lobDescription
+,payor_code clientCode
+,kpiStatusDate
+,dateadd(m,datediff(m,0,kpiStatusDate),0) dateNum
+,amount
+,'Placements (#)' inflectionPoint
+from (select distinct
+	ca.cnsmr_id as Consumer_ID
+	,ca.cnsmr_accnt_id as Consumer_Account_ID
+	,c.cnsmr_idntfr_agncy_id as DM9_Consumer_Number
+	,ca.cnsmr_accnt_idntfr_agncy_id as DM9_Consumer_Account_Number
+	,cast(ca.cb_rprtng_strt_dt as datetime) kpiStatusDate
+	,case
+		when cr.crdtr_nm like '%Equian%' then 'Equian'
+		when cr.crdtr_nm like '%DM' then 'Data Mining'
+		when ucai.UDEFSOURCE = 'DataMining' then 'Data Mining'
+		else 'CRB'
+		end as Recovery_Source
+	,cr.crdtr_nm as Payor
+	,cr.crdtr_shrt_nm as Payor_Code
+	,isnull(ppn.PPN_Flag,0) as PPN_Flag
+	,cast(1 as decimal(18,5)) as amount
+from dma_oltp_SNAP.dbo.cnsmr (nolock) c
+	inner join dma_oltp_SNAP.dbo.cnsmr_accnt (nolock) ca on c.cnsmr_id = ca.cnsmr_id
+	inner join dma_oltp_SNAP.dbo.crdtr (nolock) cr on ca.crdtr_id = cr.crdtr_id
+	inner join dma_oltp_SNAP.dbo.cnsmr_accnt_bal (nolock) cab1 on ca.cnsmr_accnt_id = cab1.cnsmr_accnt_id and cab1.bal_nm_id = 1
+	left outer join dma_oltp_SNAP.dbo.UDEFCLIENTACCOUNTINFO (nolock) ucai on ca.cnsmr_accnt_id = ucai.cnsmr_accnt_id
+	left outer join
+		(select
+			ca.cnsmr_accnt_id
+			,caal.upsrt_dttm as CAAL_Date
+			,caal.rslt_Cd
+			,case
+				when caal.rslt_Cd in (280,301,279,287,283,269,277,285,281,263,278,273) then 'Recall'
+				when caal.rslt_Cd in (286,274,284,302,272,282) then 'Return'
+				else 'Not Available'
+				end as Closure_Category
+			,cab1.cnsmr_accnt_bal_amnt + cab3.cnsmr_accnt_bal_amnt as Closure_Amount
+			,row_number() over(partition by ca.cnsmr_accnt_idntfr_agncy_id order by caal.upsrt_dttm desc) as row_num
+		from
+			dma_oltp_SNAP.dbo.cnsmr_accnt_ar_log (nolock) caal
+			inner join dma_oltp_SNAP.dbo.cnsmr (nolock) c on caal.cnsmr_id = c.cnsmr_id
+			inner join dma_oltp_SNAP.dbo.cnsmr_accnt (nolock) ca on c.cnsmr_id = ca.cnsmr_id
+			inner join dma_oltp_SNAP.dbo.crdtr (nolock) cr on ca.crdtr_id = cr.crdtr_id
+			inner join dma_oltp_SNAP.dbo.cnsmr_accnt_bal (nolock) cab1 on ca.cnsmr_accnt_id = cab1.cnsmr_accnt_id and cab1.bal_nm_id = 1
+			left outer join dma_oltp_SNAP.dbo.cnsmr_accnt_bal (nolock) cab3 on ca.cnsmr_accnt_id = cab3.cnsmr_accnt_id and cab3.bal_nm_id = 3
+		where
+			caal.cnsmr_accnt_ar_mssg_txt not like ('%FROM-VOX-TO-DM9%')
+			and cab1.cnsmr_accnt_bal_amnt &lt;&gt; -cab3.cnsmr_accnt_bal_amnt
+			and caal.actn_cd = 256
+			and c.wrkgrp_id = 467)clo
+		on ca.cnsmr_accnt_id = clo.cnsmr_accnt_id and clo.row_num = 1
+	left outer join
+		(select
+			cat.cnsmr_accnt_id
+			,1 as PPN_Flag
+		from
+			dma_oltp_SNAP.dbo.cnsmr_Accnt_Tag (nolock) cat
+		where
+			cat.tag_id = 752
+			and cat.cnsmr_accnt_sft_delete_flg = 'n')ppn
+		on ca.cnsmr_accnt_id = ppn.cnsmr_accnt_id
+	where 1=1
+	and ca.cb_rprtng_strt_dt &gt;= @startDate
+	and ca.cb_rprtng_strt_dt &lt; @endDate
+	and (clo.rslt_Cd &lt;&gt; 254 or clo.rslt_Cd is null))tbl1
+where 1=1
+and tbl1.PPN_Flag = 0
+and Recovery_Source = 'crb'</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract and Load\Placement #.Connections[OleDbConnection]"
+                  connectionManagerID="{F1D607A1-63F5-42E8-BA35-433F392182F5}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[Debt Manager]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[claimId]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[claimId]"
+                      length="40"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[claimId]"
+                      name="claimId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[lobDescription]"
+                      length="9"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[lobDescription]"
+                      name="lobDescription"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[clientCode]"
+                      length="8"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[clientCode]"
+                      name="clientCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[kpiStatusDate]"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[kpiStatusDate]"
+                      name="kpiStatusDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[dateNum]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[dateNum]"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[dateNum]"
+                      name="dateNum"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[amount]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[amount]"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[amount]"
+                      name="amount"
+                      precision="18"
+                      scale="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[inflectionPoint]"
+                      length="14"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[inflectionPoint]"
+                      name="inflectionPoint"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[claimId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="40"
+                      name="claimId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="9"
+                      name="lobDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      name="clientCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      name="kpiStatusDate" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[dateNum]"
+                      dataType="dbTimeStamp"
+                      name="dateNum" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[amount]"
+                      dataType="numeric"
+                      name="amount"
+                      precision="18"
+                      scale="5" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].ExternalColumns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      length="14"
+                      name="inflectionPoint" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[claimId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="40"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[claimId]"
+                      name="claimId" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="9"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[lobDescription]"
+                      name="lobDescription" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[clientCode]"
+                      name="clientCode" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[kpiStatusDate]"
+                      name="kpiStatusDate" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[dateNum]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[dateNum]"
+                      name="dateNum" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[amount]"
+                      dataType="numeric"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[amount]"
+                      name="amount"
+                      precision="18"
+                      scale="5" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      length="14"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[inflectionPoint]"
+                      name="inflectionPoint" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract and Load\Placement $"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Placement $"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">declare @dateOffset int = 1
+declare @startDate as datetime = dateadd(m,datediff(m,0,getdate())-@dateOffset,0)
+declare @endDate as datetime =  dateadd(m,1,@startDate)
+
+
+select (Select top 1 cnsmr_accnt_crdtr_rfrnc_id_txt from dma_oltp_SNAP.dbo.cnsmr_accnt with (nolock) where 1=1 and cnsmr_id = consumer_id) claimId
+,'PRS - CRB' lobDescription
+,payor_code clientCode
+, kpiStatusDate
+,dateadd(m,datediff(m,0,kpiStatusDate),0) dateNum
+,amount
+,'Identifications ($)' inflectionPoint
+from (select distinct
+	ca.cnsmr_id as Consumer_ID
+	,ca.cnsmr_accnt_id as Consumer_Account_ID
+	,c.cnsmr_idntfr_agncy_id as DM9_Consumer_Number
+	,ca.cnsmr_accnt_idntfr_agncy_id as DM9_Consumer_Account_Number
+	,cast(ca.cb_rprtng_strt_dt as datetime) kpiStatusDate
+	,case
+		when cr.crdtr_nm like '%Equian%' then 'Equian'
+		when cr.crdtr_nm like '%DM' then 'Data Mining'
+		when ucai.UDEFSOURCE = 'DataMining' then 'Data Mining'
+		else 'CRB'
+		end as Recovery_Source
+	,cr.crdtr_nm as Payor
+	,cr.crdtr_shrt_nm as Payor_Code
+	,isnull(ppn.PPN_Flag,0) as PPN_Flag
+	,cast(cab1.cnsmr_accnt_bal_amnt as decimal(18,5)) amount
+from dma_oltp_SNAP.dbo.cnsmr (nolock) c
+	inner join dma_oltp_SNAP.dbo.cnsmr_accnt (nolock) ca on c.cnsmr_id = ca.cnsmr_id
+	inner join dma_oltp_SNAP.dbo.crdtr (nolock) cr on ca.crdtr_id = cr.crdtr_id
+	inner join dma_oltp_SNAP.dbo.cnsmr_accnt_bal (nolock) cab1 on ca.cnsmr_accnt_id = cab1.cnsmr_accnt_id and cab1.bal_nm_id = 1
+	left outer join dma_oltp_SNAP.dbo.UDEFCLIENTACCOUNTINFO (nolock) ucai on ca.cnsmr_accnt_id = ucai.cnsmr_accnt_id
+	left outer join
+		(select
+			ca.cnsmr_accnt_id
+			,caal.upsrt_dttm as CAAL_Date
+			,caal.rslt_Cd
+			,case
+				when caal.rslt_Cd in (280,301,279,287,283,269,277,285,281,263,278,273) then 'Recall'
+				when caal.rslt_Cd in (286,274,284,302,272,282) then 'Return'
+				else 'Not Available'
+				end as Closure_Category
+			,cab1.cnsmr_accnt_bal_amnt + cab3.cnsmr_accnt_bal_amnt as Closure_Amount
+			,row_number() over(partition by ca.cnsmr_accnt_idntfr_agncy_id order by caal.upsrt_dttm desc) as row_num
+		from
+			dma_oltp_SNAP.dbo.cnsmr_accnt_ar_log (nolock) caal
+			inner join dma_oltp_SNAP.dbo.cnsmr (nolock) c on caal.cnsmr_id = c.cnsmr_id
+			inner join dma_oltp_SNAP.dbo.cnsmr_accnt (nolock) ca on c.cnsmr_id = ca.cnsmr_id
+			inner join dma_oltp_SNAP.dbo.crdtr (nolock) cr on ca.crdtr_id = cr.crdtr_id
+			inner join dma_oltp_SNAP.dbo.cnsmr_accnt_bal (nolock) cab1 on ca.cnsmr_accnt_id = cab1.cnsmr_accnt_id and cab1.bal_nm_id = 1
+			left outer join dma_oltp_SNAP.dbo.cnsmr_accnt_bal (nolock) cab3 on ca.cnsmr_accnt_id = cab3.cnsmr_accnt_id and cab3.bal_nm_id = 3
+		where
+			caal.cnsmr_accnt_ar_mssg_txt not like ('%FROM-VOX-TO-DM9%')
+			and cab1.cnsmr_accnt_bal_amnt &lt;&gt; -cab3.cnsmr_accnt_bal_amnt
+			and caal.actn_cd = 256
+			and c.wrkgrp_id = 467)clo
+		on ca.cnsmr_accnt_id = clo.cnsmr_accnt_id and clo.row_num = 1
+	left outer join
+		(select
+			cat.cnsmr_accnt_id
+			,1 as PPN_Flag
+		from
+			dma_oltp_SNAP.dbo.cnsmr_Accnt_Tag (nolock) cat
+		where
+			cat.tag_id = 752
+			and cat.cnsmr_accnt_sft_delete_flg = 'n')ppn
+		on ca.cnsmr_accnt_id = ppn.cnsmr_accnt_id
+	where 1=1
+	and ca.cb_rprtng_strt_dt &gt;= @startDate
+	and ca.cb_rprtng_strt_dt &lt; @endDate
+	and (clo.rslt_Cd &lt;&gt; 254 or clo.rslt_Cd is null))tbl1
+where 1=1
+and tbl1.PPN_Flag = 0
+and Recovery_Source = 'crb'</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract and Load\Placement $.Connections[OleDbConnection]"
+                  connectionManagerID="{F1D607A1-63F5-42E8-BA35-433F392182F5}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[Debt Manager]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[claimId]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[claimId]"
+                      length="40"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[claimId]"
+                      name="claimId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[lobDescription]"
+                      length="9"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[lobDescription]"
+                      name="lobDescription"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[clientCode]"
+                      length="8"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[clientCode]"
+                      name="clientCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[kpiStatusDate]"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[kpiStatusDate]"
+                      name="kpiStatusDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[dateNum]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[dateNum]"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[dateNum]"
+                      name="dateNum"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[amount]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[amount]"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[amount]"
+                      name="amount"
+                      precision="18"
+                      scale="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[inflectionPoint]"
+                      length="19"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[inflectionPoint]"
+                      name="inflectionPoint"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[claimId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="40"
+                      name="claimId" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="9"
+                      name="lobDescription" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      name="clientCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      name="kpiStatusDate" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[dateNum]"
+                      dataType="dbTimeStamp"
+                      name="dateNum" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[amount]"
+                      dataType="numeric"
+                      name="amount"
+                      precision="18"
+                      scale="5" />
+                    <externalMetadataColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].ExternalColumns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      length="19"
+                      name="inflectionPoint" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[claimId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="40"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[claimId]"
+                      name="claimId" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="9"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[lobDescription]"
+                      name="lobDescription" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[clientCode]"
+                      name="clientCode" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[kpiStatusDate]"
+                      name="kpiStatusDate" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[dateNum]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[dateNum]"
+                      name="dateNum" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[amount]"
+                      dataType="numeric"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[amount]"
+                      name="amount"
+                      precision="18"
+                      scale="5" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      length="19"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[inflectionPoint]"
+                      name="inflectionPoint" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract and Load\Union All"
+              componentClassID="Microsoft.UnionAll"
+              contactInfo="Union All;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combines rows from multiple data flows without sorting. For example, add rows back to a data flow after correction of errors. If sorting is important, we recommend using the Merge transformation."
+              name="Union All"
+              version="1">
+              <inputs>
+                <input
+                  refId="Package\Extract and Load\Union All.Inputs[Union All Input 1]"
+                  hasSideEffects="true"
+                  name="Union All Input 1">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 1].Columns[claimId]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="40"
+                      cachedName="claimId"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[claimId]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[claimId]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 1].Columns[lobDescription]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="9"
+                      cachedName="lobDescription"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[lobDescription]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[lobDescription]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 1].Columns[clientCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8"
+                      cachedName="clientCode"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[clientCode]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[clientCode]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 1].Columns[dateNum]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="dateNum"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[dateNum]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[dateNum]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 1].Columns[amount]"
+                      cachedDataType="numeric"
+                      cachedName="amount"
+                      cachedPrecision="18"
+                      cachedScale="5"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[amount]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[amount]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 1].Columns[inflectionPoint]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="14"
+                      cachedName="inflectionPoint"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[inflectionPoint]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[inflectionPoint]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 1].Columns[kpiStatusDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="kpiStatusDate"
+                      lineageId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output].Columns[kpiStatusDate]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[kpiStatusDate]}</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Extract and Load\Union All.Inputs[Union All Input 3]"
+                  hasSideEffects="true"
+                  name="Union All Input 3">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 3].Columns[claimId]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="40"
+                      cachedName="claimId"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[claimId]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[claimId]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 3].Columns[lobDescription]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="9"
+                      cachedName="lobDescription"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[lobDescription]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[lobDescription]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 3].Columns[clientCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8"
+                      cachedName="clientCode"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[clientCode]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[clientCode]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 3].Columns[dateNum]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="dateNum"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[dateNum]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[dateNum]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 3].Columns[amount]"
+                      cachedDataType="numeric"
+                      cachedName="amount"
+                      cachedPrecision="18"
+                      cachedScale="5"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[amount]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[amount]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 3].Columns[inflectionPoint]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="19"
+                      cachedName="inflectionPoint"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[inflectionPoint]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[inflectionPoint]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 3].Columns[kpiStatusDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="kpiStatusDate"
+                      lineageId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output].Columns[kpiStatusDate]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[kpiStatusDate]}</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Extract and Load\Union All.Inputs[Union All Input 2]"
+                  hasSideEffects="true"
+                  name="Union All Input 2">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 2].Columns[clientCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8"
+                      cachedName="clientCode"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[clientCode]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[clientCode]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 2].Columns[kpiStatusDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="kpiStatusDate"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[kpiStatusDate]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[kpiStatusDate]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 2].Columns[dateNum]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="dateNum"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[dateNum]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[dateNum]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 2].Columns[inflectionPoint]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="13"
+                      cachedName="inflectionPoint"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[inflectionPoint]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[inflectionPoint]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 2].Columns[amount]"
+                      cachedDataType="numeric"
+                      cachedName="amount"
+                      cachedPrecision="18"
+                      cachedScale="5"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[amount]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[amount]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 2].Columns[claimid]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="40"
+                      cachedName="claimid"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[claimid]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[claimId]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Extract and Load\Union All.Inputs[Union All Input 2].Columns[lobDescription]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="17"
+                      cachedName="lobDescription"
+                      lineageId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output].Columns[lobDescription]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[lobDescription]}</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Extract and Load\Union All.Inputs[Union All Input 4]"
+                  dangling="true"
+                  hasSideEffects="true"
+                  name="Union All Input 4">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract and Load\Union All.Outputs[Union All Output 1]"
+                  name="Union All Output 1">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[claimId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="40"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[claimId]"
+                      name="claimId" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[lobDescription]"
+                      codePage="1252"
+                      dataType="str"
+                      length="17"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[lobDescription]"
+                      name="lobDescription" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[clientCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[clientCode]"
+                      name="clientCode" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[dateNum]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[dateNum]"
+                      name="dateNum" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[inflectionPoint]"
+                      codePage="1252"
+                      dataType="str"
+                      length="19"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[inflectionPoint]"
+                      name="inflectionPoint" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[amount]"
+                      dataType="numeric"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[amount]"
+                      name="amount"
+                      precision="18"
+                      scale="5" />
+                    <outputColumn
+                      refId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[kpiStatusDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Extract and Load\Union All.Outputs[Union All Output 1].Columns[kpiStatusDate]"
+                      name="kpiStatusDate" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Extract and Load.Paths[Derived Column Output]"
+              endId="Package\Extract and Load\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\Extract and Load\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Extract and Load.Paths[OLE DB Source Output]"
+              endId="Package\Extract and Load\Union All.Inputs[Union All Input 1]"
+              name="OLE DB Source Output"
+              startId="Package\Extract and Load\Placement #.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Extract and Load.Paths[OLE DB Source Output1]"
+              endId="Package\Extract and Load\Union All.Inputs[Union All Input 3]"
+              name="OLE DB Source Output"
+              startId="Package\Extract and Load\Placement $.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Extract and Load.Paths[OLE DB Source Output2]"
+              endId="Package\Extract and Load\Union All.Inputs[Union All Input 2]"
+              name="OLE DB Source Output"
+              startId="Package\Extract and Load\Inventory $.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Extract and Load.Paths[Union All Output 1]"
+              endId="Package\Extract and Load\Derived Column.Inputs[Derived Column Input]"
+              name="Union All Output 1"
+              startId="Package\Extract and Load\Union All.Outputs[Union All Output 1]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Transformation"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DelayValidation="True"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{858A1C79-F503-4B10-BBFD-B92A9DB0AFE8}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Transformation"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{581841F7-EECB-4206-B2AB-15C48855AE57}"
+          SQLTask:SqlStatementSource="declare @etlProcedureName varchar(50) = 'PrsDebtManager'&#xA;declare @sourceTableList varchar(50) = concat('tbl_',@etlProcedureName,'FactData')&#xA;&#xA;EXEC [stag].[usp_StandardEtl]&#xA;@startDate = N'1/1/1900',&#xA;@etlProcedureName = @etlProcedureName,&#xA;@sourceTblList = @sourceTableList,&#xA;@createLoadTable = 1,&#xA;@loadData = 1,&#xA;@validateLoadData = 1,&#xA;@processData = 1,&#xA;@dropTables = 1,&#xA;@testRun = 0" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{C23FF461-66B2-46E9-A26B-4CB1330E21E4}"
+      DTS:From="Package\Create Stag Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Extract and Load" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{C0485215-84C7-4287-BDB4-2E06CCB818B1}"
+      DTS:From="Package\Extract and Load"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Transformation" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Create Stag Table"
+          TopLeft="174.5,66.5" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Extract and Load"
+          TopLeft="179.5,136.5" />
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Transformation"
+          TopLeft="180.5,211.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="257.25,108.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="257.25,178.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="v1.02"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="57,60"
+          Id="d7cd9950-6e56-4668-bf3c-16cdadfd351c"
+          TopLeft="591,278" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Extract and Load">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="121,42"
+          Id="Package\Extract and Load\Union All"
+          TopLeft="189,109" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\Extract and Load\Placement $"
+          TopLeft="338.5,35.5" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Extract and Load\OLE DB Destination"
+          TopLeft="170.5,248.5" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\Extract and Load\Placement #"
+          TopLeft="187.5,34.5" />
+        <NodeLayout
+          Size="133,42"
+          Id="Package\Extract and Load\Inventory $"
+          TopLeft="40.5,38.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Extract and Load\Derived Column"
+          TopLeft="173,180" />
+        <EdgeLayout
+          Id="Package\Extract and Load.Paths[OLE DB Source Output]"
+          TopLeft="253.25,76.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,32.5"
+              Start="0,0"
+              End="0,25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract and Load.Paths[Derived Column Output]"
+          TopLeft="253,222">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,26.5"
+              Start="0,0"
+              End="0,19">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract and Load.Paths[Union All Output 1]"
+          TopLeft="249.75,151">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,29"
+              Start="0,0"
+              End="0,21.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract and Load.Paths[OLE DB Source Output2]"
+          TopLeft="107,80.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="114.25,28.5"
+              Start="0,0"
+              End="114.25,21">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.5902964959569" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.5902964959569"
+                    Point2="0,18.5902964959569"
+                    Point3="4,18.5902964959569" />
+                  <mssgle:LineSegment
+                    End="110.25,18.5902964959569" />
+                  <mssgle:CubicBezierSegment
+                    Point1="110.25,18.5902964959569"
+                    Point2="114.25,18.5902964959569"
+                    Point3="114.25,22.5902964959569" />
+                  <mssgle:LineSegment
+                    End="114.25,21" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract and Load.Paths[OLE DB Source Output1]"
+          TopLeft="407,77.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-129.25,31.5"
+              Start="0,0"
+              End="-129.25,24">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.5471698113208" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.5471698113208"
+                    Point2="0,20.5471698113208"
+                    Point3="-4,20.5471698113208" />
+                  <mssgle:LineSegment
+                    End="-125.25,20.5471698113208" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-125.25,20.5471698113208"
+                    Point2="-129.25,20.5471698113208"
+                    Point3="-129.25,24.5471698113208" />
+                  <mssgle:LineSegment
+                    End="-129.25,24" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract and Load\Placement $">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract and Load\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract and Load\Placement #">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract and Load\Inventory $">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

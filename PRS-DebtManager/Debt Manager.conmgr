@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="Debt Manager"
+  DTS:DTSID="{F1D607A1-63F5-42E8-BA35-433F392182F5}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=dbvep57464.ms.ds.uhc.com;User ID=dm9businessid;Initial Catalog=dma_oltp_SNAP;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfdBSxCHqfU2O8rPyVtzQEQAAAAACAAAAAAADZgAAwAAAABAAAACZN7CuilAYstWxdp9C8ikYAAAAAASAAACgAAAAEAAAAGaZzsLZl6/ogR6MCkjaiCKAAAAAOLUtmlrvc4qEezc/p9IoDczZSjdJBFrPgPlTUwL2RFcum2A7fPhHfzDLuY/i9EWlVfk2U0fipA8orXTzzucGbUhkFp6GAzE0kLJPaw+D+Vxvgyf3YHIqIdtgUFQgftRZE5lnTLl+UgTh5eo3ZOQm5wyGcfOM0PWaJWSm+TFSxQIUAAAAlR6q2D0+EUWeP6oggGPjcvDyUCc=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

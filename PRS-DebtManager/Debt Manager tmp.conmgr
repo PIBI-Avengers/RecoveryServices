@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="Debt Manager tmp"
+  DTS:DTSID="{95f84949-344e-419b-8b4d-8e744d8ad5e6}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:Retain="True"
+      DTS:ConnectionString="Data Source=dbvep57464.ms.ds.uhc.com;User ID=dm9businessid;Initial Catalog=tempdb;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfdBSxCHqfU2O8rPyVtzQEQAAAAACAAAAAAADZgAAwAAAABAAAACFiXBfpaiCZQhhEUl32zixAAAAAASAAACgAAAAEAAAAOHJHvWaV9H8yb7EAl6gz/+AAAAAzeZ6EW7F6e2dJxVsWhXs9lPf3k6wgFM27CKWW0zUqULiPmgPDTL5q2SvtclG8159DrVvdLUc6A/cYhahkCUKraA3+s3a++2hObY/wdrWsPITvJHK3lPp5J3WRkhnza7rstU1vx1gqUGLDxuIy5H0VVWsrx2eHe5XS6qYMBQJ/EcUAAAAQkuc2clKoVNPgKBQEN3VojLI5XM=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>
